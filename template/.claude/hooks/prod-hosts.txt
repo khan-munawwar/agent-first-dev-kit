@@ -1,0 +1,9 @@
+# Production hosts and identifiers. One pattern per line (plain text match).
+# Any agent Bash command containing one of these is blocked by guard-bash.sh.
+# Add SSH aliases, hostnames, IPs, database hosts, cloud project IDs.
+# Keep this file free of secrets. Hostnames only.
+#
+# Examples (remove the # to enable):
+# ssh prod
+# prod.example.com
+# 203.0.113.10
