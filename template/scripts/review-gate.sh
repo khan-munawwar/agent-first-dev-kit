@@ -7,7 +7,9 @@
 # diff is exactly what was reviewed. Anything staged after the review changes
 # the fingerprint, so the review must run again.
 #
-# Markers live inside .git/, so they are never committed.
+# Markers live inside the code repository's .git/, so they are never committed.
+# In the workspace layout the code repository is the sub-folder named in
+# .agent-kit (scripts/kit-env.sh); git commands run there.
 #
 # Usage:
 #   bash scripts/review-gate.sh hash    print the fingerprint of the staged diff
@@ -15,16 +17,20 @@
 #   bash scripts/review-gate.sh check   exit 0 if reviewed, exit 1 if not
 
 set -u
-git rev-parse --git-dir >/dev/null 2>&1 || { echo "review-gate: not a git repository" >&2; exit 1; }
+. "$(cd "$(dirname "$0")" && pwd)/kit-env.sh"
+g() { git -C "$REPO_ROOT" "$@"; }
 
-dir="$(git rev-parse --git-dir)/agent-review"
+[ -d "$REPO_ROOT" ] && g rev-parse --git-dir >/dev/null 2>&1 \
+  || { echo "review-gate: not a git repository (${REPO_ROOT})" >&2; exit 1; }
+
+dir="$(g rev-parse --absolute-git-dir)/agent-review"
 
 fingerprint() {
-  git diff --cached --binary | git hash-object --stdin
+  g diff --cached --binary | g hash-object --stdin
 }
 
 has_staged() {
-  ! git diff --cached --quiet
+  ! g diff --cached --quiet
 }
 
 case "${1:-}" in

@@ -97,6 +97,28 @@ where it matters most.
 | On demand | Specs, decisions, active changes | When the task touches them |
 | Background | Discovery meetings, raw transcripts | Only when asked, or to trace a decision |
 
+**Two layouts**
+
+| Layout | Kit root | Code repository | Use when |
+|---|---|---|---|
+| `in-repo` (default) | the git root | same folder | You own the repository and the kit files can be committed with the code. |
+| `workspace` | a wrapper folder, optionally its own private repository | a sub-folder, for example `app/` | The code repository must stay free of kit files (a client repository), or one project spans several repositories. |
+
+The layout is set once by `adopt.sh`. In the workspace layout a `.agent-kit`
+file at the kit root names the sub-folder, and every kit script runs its git
+commands there (`scripts/kit-env.sh`). Agent sessions start at the kit root in
+both layouts.
+
+```
+workspace layout                in-repo layout
+my-project/                     my-project/        <- git root
+  .agent-kit                      AGENTS.md
+  AGENTS.md  docs/  scripts/      docs/  scripts/  .claude/
+  .claude/                        src/ ...
+  app/        <- git root
+    src/ ...
+```
+
 **One folder per change**
 
 ```
@@ -119,6 +141,17 @@ bash agent-first-dev-kit/scripts/adopt.sh /path/to/your/project
 existing file. It lists anything it skipped, so you can merge by hand or ask
 the agent to. Add `.claude/settings.local.json` to the project's `.gitignore`.
 
+For the workspace layout (kit files outside the code repository), name the
+sub-folder that holds the repository:
+
+```
+mkdir my-project
+bash agent-first-dev-kit/scripts/adopt.sh my-project --repo app
+git clone <repo-url> my-project/app
+```
+
+If `my-project` is its own git repository, add `app/` to its `.gitignore`.
+
 ### 2. Start an agent session
 
 Open the project in Claude Code, Codex, Cursor, Gemini CLI or Copilot. The
@@ -126,7 +159,8 @@ agent reads `AGENTS.md` and runs `scripts/agent-check.sh`, which reports:
 
 ```
 == agent-check: my-project
-kit version: 0.1.0
+layout: in-repo
+kit version: 0.2.0
 phase: NOT SET
 setup items open: 57 (P1: 24, P2: 25, P3: 8). Follow docs/SETUP.md.
   P1 AGENTS.md:19  What is this product, who uses it, what problem does it solve?
@@ -182,6 +216,7 @@ template/                         copied into your project by adopt.sh
     agents/pre-commit-reviewer.md reviewer as a subagent with its own context
     skills/commit/SKILL.md        "verify and commit" flow
   scripts/
+    kit-env.sh                    finds the kit root and the code repository
     agent-check.sh                session check: setup gaps, status, git state
     review-gate.sh                ties a commit to a passed review
   docs/
@@ -197,9 +232,12 @@ template/                         copied into your project by adopt.sh
 optional/                         copy when the project needs it
   docs/guides/MOBILE-RELEASE.md
   docs/API-MAP.md  docs/COMMS-LEDGER.md  docs/handoffs/_template.md
-scripts/adopt.sh                  copy the template into a project
+scripts/adopt.sh                  copy the template into a project (--repo for workspace layout)
 VERSION  CHANGELOG.md
 ```
+
+A project in the workspace layout also has `.agent-kit` at the kit root
+(project-owned, written by `adopt.sh`).
 
 **Who owns what:** files in `docs/guides/`, `docs/agents/`, `scripts/` and
 `.claude/hooks/guard-bash.sh` are managed by the kit and replaced on sync.
@@ -212,7 +250,7 @@ On Windows, use Git Bash or WSL.
 
 ## Status
 
-Version 0.1.0. Tested on macOS. Feedback from real use will shape the next
+Version 0.2.0. Tested on macOS. Feedback from real use will shape the next
 versions.
 
 - [x] Templates, guides, agent roles

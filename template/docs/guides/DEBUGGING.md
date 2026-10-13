@@ -1,6 +1,6 @@
 # DEBUGGING: evidence before conclusions
 
-<!-- Managed by agent-first-dev-kit v0.1.0. -->
+<!-- Managed by agent-first-dev-kit v0.2.0. -->
 
 Most wasted time with coding agents comes from confident guesses. These rules
 keep claims tied to evidence.

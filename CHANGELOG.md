@@ -4,6 +4,28 @@ All notable changes to the kit. Projects read this when `agent-check.sh`
 reports a newer version. Format based on Keep a Changelog; versions follow
 Semantic Versioning.
 
+## 0.2.0 (2026-10-13)
+
+### Added
+- Workspace layout: the kit can live in a wrapper folder with the code
+  repository in a sub-folder, so client repositories stay free of kit files.
+  `adopt.sh --repo <subfolder>` selects it and writes `.agent-kit`.
+- `scripts/kit-env.sh`: finds the kit root and the code repository for both
+  layouts. `agent-check.sh`, `review-gate.sh` and the Claude Code guard hook
+  use it, so git state, review markers and branch checks come from the code
+  repository.
+- `agent-check.sh` reports the layout, a missing repo folder, and a wrapper
+  repository that does not ignore the code sub-folder.
+
+### Changed
+- Git guide, commit skill and pre-commit reviewer say where git commands run
+  in the workspace layout.
+
+### Fixed
+- The Claude Code guard hook now also catches `git -C <dir> commit` and
+  `git -C <dir> push`. Before, only the plain `git commit` and `git push`
+  forms were checked.
+
 ## 0.1.0 (2026-09-29)
 
 First version.

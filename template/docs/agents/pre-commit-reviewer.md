@@ -16,6 +16,9 @@ review does not share the context of the session that wrote the code.
 
 ## Step 1: Collect
 
+In the workspace layout (`.agent-kit` at the kit root) run these inside the
+repo sub-folder it names. Docs, rules and ADRs stay at the kit root.
+
 ```
 git status --short
 git branch --show-current

@@ -1,6 +1,6 @@
 # BROWSER: using a browser for testing and checking
 
-<!-- Managed by agent-first-dev-kit v0.1.0. -->
+<!-- Managed by agent-first-dev-kit v0.2.0. -->
 
 ## Which tool
 

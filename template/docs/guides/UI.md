@@ -1,6 +1,6 @@
 # UI: keeping the interface consistent
 
-<!-- Managed by agent-first-dev-kit v0.1.0. Project facts (tokens, components, reference screens, pitfalls) live in docs/UI.md. -->
+<!-- Managed by agent-first-dev-kit v0.2.0. Project facts (tokens, components, reference screens, pitfalls) live in docs/UI.md. -->
 
 Agents drift from the existing design because they cannot see it. They invent
 a new table style, a new colour, a new header. These rules tell the agent

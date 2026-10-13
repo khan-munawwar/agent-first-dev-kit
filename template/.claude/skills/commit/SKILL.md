@@ -9,7 +9,9 @@ Follow the commit flow in `docs/guides/GIT.md` ("Commit flow"). In Claude Code
 the steps map to tools like this:
 
 1. Run `git status` and `git diff`. Stage only the files that belong to this
-   change, by name. If a file's purpose is unclear, ask.
+   change, by name. If a file's purpose is unclear, ask. In the workspace
+   layout (`.agent-kit` present), run every git command inside the repo
+   sub-folder it names.
 2. Launch the `pre-commit-reviewer` subagent. Tell it which change this is
    (the `docs/changes/` folder or a one-line summary of the request).
 3. Show the verdict and the findings to the user.

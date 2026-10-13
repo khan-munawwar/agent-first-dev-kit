@@ -1,6 +1,6 @@
 # DOCS: how this documentation system works
 
-<!-- Managed by agent-first-dev-kit v0.1.0. Do not edit in a project; change the kit and sync. -->
+<!-- Managed by agent-first-dev-kit v0.2.0. Do not edit in a project; change the kit and sync. -->
 
 ## The idea
 
@@ -93,5 +93,6 @@ checkout):
 2. Show the human what would change. Wait for a yes.
 3. Replace kit-managed files (`docs/guides/`, `docs/agents/`, `scripts/`,
    `.claude/hooks/guard-bash.sh`, templates). Never overwrite project-owned
-   files; apply their template changes by hand, keeping the project's content.
+   files (`.agent-kit` is one); apply their template changes by hand, keeping
+   the project's content.
 4. Update the version at the top of `AGENTS.md`.

@@ -29,11 +29,21 @@ fi
 [ -z "$cmd" ] && exit 0
 
 ROOT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
+# Workspace layout: git runs in the repo sub-folder (scripts/kit-env.sh).
+if [ -f "$ROOT/scripts/kit-env.sh" ]; then
+  . "$ROOT/scripts/kit-env.sh"
+  ROOT="$KIT_ROOT"
+else
+  REPO_ROOT="$ROOT"
+fi
 
 block() {
   echo "BLOCKED by .claude/hooks/guard-bash.sh: $1" >&2
   exit 2
 }
+
+# "git commit" and "git -C <dir> commit" both count.
+GIT='git([[:space:]]+-C[[:space:]]+[^[:space:]]+)?[[:space:]]+'
 
 # 1. Skipping git hooks
 if printf '%s' "$cmd" | grep -qE -- '--no-verify'; then
@@ -41,17 +51,17 @@ if printf '%s' "$cmd" | grep -qE -- '--no-verify'; then
 fi
 
 # 2 and 3. Pushes
-if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git[[:space:]]+push'; then
+if printf '%s' "$cmd" | grep -qE "(^|[;&|[:space:]])${GIT}push"; then
   if printf '%s' "$cmd" | grep -qE -- '(--force|--force-with-lease|[[:space:]]-f([[:space:]]|$))'; then
     block "force push is not allowed for the agent. Ask the human."
   fi
-  if printf '%s' "$cmd" | grep -qE 'git[[:space:]]+push.*[[:space:]:](main|master|trunk|production)([[:space:]]|$)'; then
+  if printf '%s' "$cmd" | grep -qE "${GIT}push.*[[:space:]:](main|master|trunk|production)([[:space:]]|\$)"; then
     block "pushing to the default branch is a human step. Push a feature branch and open a pull request."
   fi
-  current=$(git -C "$ROOT" branch --show-current 2>/dev/null)
+  current=$(git -C "$REPO_ROOT" branch --show-current 2>/dev/null)
   case "$current" in
     main|master|trunk|production)
-      if ! printf '%s' "$cmd" | grep -qE 'git[[:space:]]+push[[:space:]]+[^[:space:]-]+[[:space:]]+[^[:space:]]+'; then
+      if ! printf '%s' "$cmd" | grep -qE "${GIT}push[[:space:]]+[^[:space:]-]+[[:space:]]+[^[:space:]]+"; then
         block "you are on '$current'. Pushing it is a human step. Create a feature branch first."
       fi
       ;;
@@ -59,11 +69,11 @@ if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git[[:space:]]+push'; then
 fi
 
 # 4 and 5. Commits
-if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git[[:space:]]+commit'; then
-  if printf '%s' "$cmd" | grep -qE 'git[[:space:]]+commit[^;&|]*[[:space:]](-a|--all|-[a-zA-Z]*a[a-zA-Z]*)([[:space:]]|$)'; then
+if printf '%s' "$cmd" | grep -qE "(^|[;&|[:space:]])${GIT}commit"; then
+  if printf '%s' "$cmd" | grep -qE "${GIT}commit[^;&|]*[[:space:]](-a|--all|-[a-zA-Z]*a[a-zA-Z]*)([[:space:]]|\$)"; then
     block "do not use 'git commit -a'. Stage the files that belong to this change, run the pre-commit review, then commit."
   fi
-  if printf '%s' "$cmd" | grep -qE 'git[[:space:]]+commit[^;&|]*[[:space:]]--[[:space:]]'; then
+  if printf '%s' "$cmd" | grep -qE "${GIT}commit[^;&|]*[[:space:]]--[[:space:]]"; then
     block "do not pass paths to 'git commit'. Stage explicitly, review, then commit."
   fi
   if [ -f "$ROOT/scripts/review-gate.sh" ]; then

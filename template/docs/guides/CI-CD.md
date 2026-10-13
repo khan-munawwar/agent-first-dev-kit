@@ -1,6 +1,6 @@
 # CI-CD: pipelines, builds, deploys and releases
 
-<!-- Managed by agent-first-dev-kit v0.1.0. Project pipeline facts live in docs/OPERATIONS.md. -->
+<!-- Managed by agent-first-dev-kit v0.2.0. Project pipeline facts live in docs/OPERATIONS.md. -->
 
 The agent helps at every stage. The human owns every step that changes what
 real users get. Levels are defined in `guides/AUTONOMY.md`.

@@ -10,10 +10,24 @@ set -u
 SHOW_ALL=0
 [ "${1:-}" = "--all" ] && SHOW_ALL=1
 
-ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-cd "$ROOT" || exit 0
+. "$(cd "$(dirname "$0")" && pwd)/kit-env.sh"
+cd "$KIT_ROOT" || exit 0
 
-echo "== agent-check: $(basename "$ROOT")"
+echo "== agent-check: $(basename "$KIT_ROOT")"
+
+# ---- Layout ----------------------------------------------------------------
+if [ "$KIT_LAYOUT" = "workspace" ]; then
+  echo "layout: workspace (repo: $KIT_REPO/)"
+  if [ ! -d "$REPO_ROOT" ]; then
+    echo "  repo folder $KIT_REPO/ not found. Clone the code repository there (README, 'Two layouts')."
+  fi
+  outer=$(git -C "$KIT_ROOT" rev-parse --show-toplevel 2>/dev/null || true)
+  if [ "$outer" = "$KIT_ROOT" ] && ! git -C "$KIT_ROOT" check-ignore -q "$KIT_REPO" 2>/dev/null; then
+    echo "  warning: the kit root is a git repository that does not ignore $KIT_REPO/. Add '$KIT_REPO/' to its .gitignore so the two repositories stay separate."
+  fi
+else
+  echo "layout: in-repo"
+fi
 
 # ---- Kit version -----------------------------------------------------------
 kit_ver=$(grep -m1 -oE 'agent-first-dev-kit v[0-9]+\.[0-9]+\.[0-9]+' AGENTS.md 2>/dev/null | sed 's/.* v//')
@@ -107,19 +121,19 @@ if [ -f docs/ISSUES.md ]; then
 fi
 
 # ---- Git state -------------------------------------------------------------
-if git rev-parse --git-dir >/dev/null 2>&1; then
-  branch=$(git branch --show-current 2>/dev/null)
-  changed=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
-  staged=$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
+if [ -d "$REPO_ROOT" ] && git -C "$REPO_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
+  branch=$(git -C "$REPO_ROOT" branch --show-current 2>/dev/null)
+  changed=$(git -C "$REPO_ROOT" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+  staged=$(git -C "$REPO_ROOT" diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')
   echo "git: branch ${branch:-detached}, $changed changed files ($staged staged)"
-  echo "git identity: $(git config user.name 2>/dev/null) <$(git config user.email 2>/dev/null)>"
+  echo "git identity: $(git -C "$REPO_ROOT" config user.name 2>/dev/null) <$(git -C "$REPO_ROOT" config user.email 2>/dev/null)>"
   case "$branch" in
     main|master|trunk|production)
       [ "$changed" -gt 0 ] && echo "  warning: uncommitted changes on the default branch. Create a branch before committing."
       ;;
   esac
 else
-  echo "git: not a repository"
+  echo "git: not a repository${KIT_REPO:+ ($KIT_REPO/)}"
 fi
 
 exit 0

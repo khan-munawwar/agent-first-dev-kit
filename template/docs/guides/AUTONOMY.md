@@ -1,6 +1,6 @@
 # AUTONOMY: what the agent does alone, and where a human takes over
 
-<!-- Managed by agent-first-dev-kit v0.1.0. Project overrides go in AGENTS.md, and must say "overrides guides/AUTONOMY.md". -->
+<!-- Managed by agent-first-dev-kit v0.2.0. Project overrides go in AGENTS.md, and must say "overrides guides/AUTONOMY.md". -->
 
 The human stays in the loop where a mistake is expensive or cannot be undone.
 The agent prepares everything; the human presses the button.

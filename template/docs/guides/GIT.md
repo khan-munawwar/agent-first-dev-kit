@@ -1,6 +1,6 @@
 # GIT: branches, commits and pull requests
 
-<!-- Managed by agent-first-dev-kit v0.1.0. The project's own settings (who commits, message style, attribution, identity) live in the Git section of AGENTS.md. -->
+<!-- Managed by agent-first-dev-kit v0.2.0. The project's own settings (who commits, message style, attribution, identity) live in the Git section of AGENTS.md. -->
 
 ## Branches
 
@@ -27,6 +27,10 @@
    reviewed.
 
 Rules:
+- In the workspace layout the code repository is a sub-folder of the kit root
+  (`.agent-kit`, `scripts/kit-env.sh`). The kit's scripts already run git
+  there. When you run git yourself, run it in that folder (`git -C <repo>` or
+  `cd` first), never at the kit root.
 - No `git commit -a`, no paths after `git commit`, no `--no-verify`.
 - No force push. No push to the default branch.
 - Commit from a clean, known state before any build that others will test.

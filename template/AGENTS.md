@@ -1,6 +1,6 @@
 # AGENTS.md
 
-<!-- agent-first-dev-kit v0.1.0 -->
+<!-- agent-first-dev-kit v0.2.0 -->
 Entry point for every AI coding agent (Claude Code, Codex, Cursor, Gemini CLI,
 Copilot and others). Keep this file under one page. Detail lives in `docs/`.
 

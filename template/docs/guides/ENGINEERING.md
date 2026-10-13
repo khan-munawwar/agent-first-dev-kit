@@ -1,6 +1,6 @@
 # ENGINEERING: defaults for code quality
 
-<!-- Managed by agent-first-dev-kit v0.1.0. Project rules in docs/CONVENTIONS.md add to or override these. -->
+<!-- Managed by agent-first-dev-kit v0.2.0. Project rules in docs/CONVENTIONS.md add to or override these. -->
 
 ## Read before writing
 
