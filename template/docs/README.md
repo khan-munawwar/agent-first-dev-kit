@@ -19,6 +19,7 @@ Tiers: **Always** = every session. **On demand** = when the task touches it.
 | `ARCHITECTURE.md` | On demand | Adding code, finding where something lives |
 | `CONVENTIONS.md` | On demand | Writing or reviewing code |
 | `ENVIRONMENTS.md` | On demand | Running, testing, switching environments, test accounts |
+| `GIT.md` | On demand | Committing, branching, pushing: this project's values for `guides/GIT.md` |
 | `OPERATIONS.md` | On demand | Deploys, migrations, logs, servers, anything outside git |
 | `UI.md` | On demand | Any UI work |
 | `RESOURCES.md` | On demand | A task leans on a reference or an external system |
@@ -43,7 +44,7 @@ Tiers: **Always** = every session. **On demand** = when the task touches it.
 | `DOCS.md` | Adding, moving or pruning docs; syncing with the kit |
 | `WORKFLOW.md` | Starting or finishing a change or a session |
 | `AUTONOMY.md` | Unsure whether you may do something without the human |
-| `GIT.md` | Branching, committing, pushing, pull requests |
+| `GIT.md` | Branching, committing, pushing, pull requests, with the project's `docs/GIT.md` |
 | `TESTING.md` | Writing tests, claiming something works |
 | `DEBUGGING.md` | A bug, a failed hypothesis, or a claim about an external system |
 | `CI-CD.md` | Pipelines, builds, deploys, releases |

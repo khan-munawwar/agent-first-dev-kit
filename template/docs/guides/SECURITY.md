@@ -1,6 +1,6 @@
 # SECURITY: secrets, data and access
 
-<!-- Managed by agent-first-dev-kit v0.2.0. -->
+<!-- Managed by agent-first-dev-kit v0.3.0. -->
 
 ## Secrets
 

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-<!-- agent-first-dev-kit v0.2.0 -->
+<!-- agent-first-dev-kit v0.3.0 -->
 Entry point for every AI coding agent (Claude Code, Codex, Cursor, Gemini CLI,
 Copilot and others). Keep this file under one page. Detail lives in `docs/`.
 
@@ -52,6 +52,10 @@ Phase: <!-- SETUP(P1): prototype | pre-launch | production. Rules in docs/guides
 10. **Mistake twice, it becomes a rule** in "Critical invariants" below or in
     the right doc.
 11. **Every session that changed something ends by updating `docs/STATUS.md`.**
+12. **Missing settings are asked, not guessed.** A required slot in a
+    `docs/<TOPIC>.md` (a SETUP comment) is asked for before the task that
+    needs it. A slot on the kit default is used and named once per session
+    (`docs/guides/DOCS.md`, "Guide pairs").
 
 <!-- SETUP(P2): Project-specific hard rules, at most 5. One line each, with the reason in brackets. Delete this comment if there are none. -->
 
@@ -64,7 +68,9 @@ doc with the detail. The pre-commit reviewer checks every one.
 
 ## Git
 
-<!-- SETUP(P1): Who commits (agent or human)? Commit message style with 2 real examples. AI attribution on or off? Branch naming. Is the default branch protected? Git name and email for this repo. Generic process: docs/guides/GIT.md. -->
+Rules: `docs/guides/GIT.md`. This project's values (identity, who commits,
+ticket pattern, branch naming, examples, overrides): `docs/GIT.md`. Run
+`bash scripts/settings-check.sh GIT` before the first commit of a session.
 
 ## Where things are
 
@@ -78,6 +84,7 @@ doc with the detail. The pre-commit reviewer checks every one.
 | Code layout and main flows | `docs/ARCHITECTURE.md` |
 | Project coding rules | `docs/CONVENTIONS.md` |
 | Environments, test accounts, config | `docs/ENVIRONMENTS.md` |
+| Git identity, who commits, ticket pattern, examples | `docs/GIT.md` |
 | Deploy, logs, server facts, ledgers | `docs/OPERATIONS.md` |
 | Design tokens, components, reference screens | `docs/UI.md` |
 | References and external systems | `docs/RESOURCES.md` |

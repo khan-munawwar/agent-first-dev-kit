@@ -97,6 +97,19 @@ where it matters most.
 | On demand | Specs, decisions, active changes | When the task touches them |
 | Background | Discovery meetings, raw transcripts | Only when asked, or to trace a decision |
 
+**Guide pairs: kit rules, project values**
+
+Every kit guide `docs/guides/<TOPIC>.md` holds the rules and reasons. Its
+project partner `docs/<TOPIC>.md` holds the values that make them concrete
+for one project: the ticket pattern, who commits, the real examples. The kit
+replaces guides on sync and never touches partners. Slots in a partner are
+either required (the agent asks the human before the task that needs them,
+never guesses) or on a kit default (the agent uses it, says so once, and
+invites the human to set their own). `scripts/settings-check.sh GIT` prints
+both lists, and the Claude Code guard hook blocks a commit while a required
+Git slot is open. Work never stops for a missing optional value, and never
+proceeds on a guessed required one.
+
 **Two layouts**
 
 | Layout | Kit root | Code repository | Use when |
@@ -160,7 +173,7 @@ agent reads `AGENTS.md` and runs `scripts/agent-check.sh`, which reports:
 ```
 == agent-check: my-project
 layout: in-repo
-kit version: 0.2.0
+kit version: 0.3.0
 phase: NOT SET
 setup items open: 57 (P1: 24, P2: 25, P3: 8). Follow docs/SETUP.md.
   P1 AGENTS.md:19  What is this product, who uses it, what problem does it solve?
@@ -211,19 +224,21 @@ template/                         copied into your project by adopt.sh
   .claude/                        Claude Code extras (optional, never required)
     settings.json                 session-start check, Bash guard hook
     hooks/guard-bash.sh           blocks push to main, force push, --no-verify,
-                                  unreviewed commits, production hosts
+                                  unreviewed commits, production hosts,
+                                  commits while a required Git slot is open
     hooks/prod-hosts.txt          your production hosts
     agents/pre-commit-reviewer.md reviewer as a subagent with its own context
     skills/commit/SKILL.md        "verify and commit" flow
   scripts/
     kit-env.sh                    finds the kit root and the code repository
+    settings-check.sh             required slots open / kit defaults in use per topic
     agent-check.sh                session check: setup gaps, status, git state
     review-gate.sh                ties a commit to a passed review
   docs/
     README.md                     index with reading tiers
     SETUP.md                      how the agent onboards itself
     PROJECT.md STATUS.md ISSUES.md ARCHITECTURE.md CONVENTIONS.md
-    ENVIRONMENTS.md OPERATIONS.md UI.md RESOURCES.md GLOSSARY.md
+    ENVIRONMENTS.md OPERATIONS.md GIT.md UI.md RESOURCES.md GLOSSARY.md
     changes/_template/            intent.md spec.md plan.md
     adr/  meetings/  incidents/   with templates
     agents/                       pre-commit-reviewer, planner, qa, resource-scout
@@ -250,7 +265,7 @@ On Windows, use Git Bash or WSL.
 
 ## Status
 
-Version 0.2.0. Tested on macOS. Feedback from real use will shape the next
+Version 0.3.0. Tested on macOS. Feedback from real use will shape the next
 versions.
 
 - [x] Templates, guides, agent roles

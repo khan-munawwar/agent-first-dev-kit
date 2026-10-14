@@ -1,6 +1,6 @@
 # AUTONOMY: what the agent does alone, and where a human takes over
 
-<!-- Managed by agent-first-dev-kit v0.2.0. Project overrides go in AGENTS.md, and must say "overrides guides/AUTONOMY.md". -->
+<!-- Managed by agent-first-dev-kit v0.3.0. Project overrides go in AGENTS.md, and must say "overrides guides/AUTONOMY.md". -->
 
 The human stays in the loop where a mistake is expensive or cannot be undone.
 The agent prepares everything; the human presses the button.
@@ -24,7 +24,7 @@ A question from the human is never a go-ahead.
 | Edit code and docs for the current task | Alone | Alone | Alone |
 | Run tests, lint, local builds | Alone | Alone | Alone |
 | Install or upgrade dependencies | Go-ahead | Go-ahead | Go-ahead |
-| Commit (after the pre-commit review) | Per `AGENTS.md` Git section | Per Git section | Per Git section |
+| Commit (after the pre-commit review) | Per `docs/GIT.md` | Per `docs/GIT.md` | Per `docs/GIT.md` |
 | Push a feature branch | Go-ahead | Go-ahead | Go-ahead |
 | Merge, push to the default branch | Human only | Human only | Human only |
 | Local database writes and migrations | Alone | Alone | Alone |

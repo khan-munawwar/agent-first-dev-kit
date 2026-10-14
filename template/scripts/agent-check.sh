@@ -48,7 +48,7 @@ esac
 echo "phase: $phase"
 
 # ---- Required files --------------------------------------------------------
-required="AGENTS.md REVIEW.md docs/README.md docs/SETUP.md docs/PROJECT.md docs/STATUS.md docs/ISSUES.md docs/ARCHITECTURE.md docs/CONVENTIONS.md docs/ENVIRONMENTS.md docs/UI.md docs/RESOURCES.md"
+required="AGENTS.md REVIEW.md docs/README.md docs/SETUP.md docs/PROJECT.md docs/STATUS.md docs/ISSUES.md docs/ARCHITECTURE.md docs/CONVENTIONS.md docs/ENVIRONMENTS.md docs/GIT.md docs/UI.md docs/RESOURCES.md"
 missing=""
 for f in $required; do
   [ -f "$f" ] || missing="$missing $f"
@@ -81,6 +81,23 @@ if [ -n "$setup_list" ]; then
   fi
 else
   echo "setup items open: 0"
+fi
+
+# ---- Kit defaults in use -----------------------------------------------------
+# A "default" comment marks a project setting still on the kit default. It never
+# blocks; the agent names it once when it applies (docs/guides/DOCS.md, "Guide pairs").
+defaults_total=0
+defaults_files=""
+for f in docs/*.md; do
+  [ -f "$f" ] || continue
+  c=$(grep -cE '<!--[[:space:]]*default[[:space:]]*-->' "$f" 2>/dev/null || true)
+  if [ "${c:-0}" -gt 0 ]; then
+    defaults_total=$((defaults_total + c))
+    defaults_files="$defaults_files $(basename "$f" .md):$c"
+  fi
+done
+if [ "$defaults_total" -gt 0 ]; then
+  echo "kit defaults in use: $defaults_total ($(echo "$defaults_files" | sed 's/^ //')). Run scripts/settings-check.sh <TOPIC> for the list."
 fi
 
 # ---- STATUS.md age ---------------------------------------------------------

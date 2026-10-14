@@ -1,6 +1,6 @@
 # WORKFLOW: sessions, changes and done
 
-<!-- Managed by agent-first-dev-kit v0.2.0. Do not edit in a project; change the kit and sync. -->
+<!-- Managed by agent-first-dev-kit v0.3.0. Do not edit in a project; change the kit and sync. -->
 
 ## Session start
 

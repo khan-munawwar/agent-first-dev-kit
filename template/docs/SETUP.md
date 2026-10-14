@@ -29,6 +29,9 @@ text and rarely changes. The checklist itself lives in the project files as
    into any doc. Write where they live instead.
 7. Run the check again. Setup is done when it reports 0 open P1 items. P2 and
    P3 can be filled when they become relevant.
+8. Lines ending in a `default` comment are kit defaults, not SETUP items. They
+   never block. Mention them once when they apply and offer to record the
+   human's own value; the human confirms a default by deleting the comment.
 
 ## Adopting the kit in an existing project
 
@@ -56,7 +59,7 @@ here is missing for this kind of project.
 | Product, users, goals, non-goals, principles, stakeholders | `PROJECT.md` |
 | Phase (prototype, pre-launch, production) | `AGENTS.md` |
 | Stack, commands, missing toolchains | `AGENTS.md` |
-| Who commits, message style, attribution, branches, git identity | `AGENTS.md` Git section |
+| Git identity, tracker and ticket pattern, who commits, attribution, branches, examples | `GIT.md` (fills `guides/GIT.md` slots) |
 | What the agent may do alone, per environment | `guides/AUTONOMY.md` defaults, overrides in `AGENTS.md` |
 | Code layout, main flows | `ARCHITECTURE.md` |
 | Coding rules, database rules, one method per concern | `CONVENTIONS.md` |

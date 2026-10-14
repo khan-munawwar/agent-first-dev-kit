@@ -4,6 +4,34 @@ All notable changes to the kit. Projects read this when `agent-check.sh`
 reports a newer version. Format based on Keep a Changelog; versions follow
 Semantic Versioning.
 
+## 0.3.0 (2026-10-13)
+
+### Added
+- Guide pairs: a kit guide `docs/guides/<TOPIC>.md` holds rules and reasons,
+  its project partner `docs/<TOPIC>.md` holds the values. Slots are either
+  required (a SETUP comment: the agent asks, never guesses) or on a kit
+  default (a `default` comment: used, named once, confirmed by deleting the
+  comment). Described in `docs/guides/DOCS.md`, "Guide pairs".
+- `docs/GIT.md` project partner for `guides/GIT.md`: identity, who commits,
+  attribution, branch naming, tracker and ticket pattern, examples, overrides.
+- `scripts/settings-check.sh TOPIC`: lists required slots still open and kit
+  defaults in use. First step of the commit skill.
+- `agent-check.sh` reports kit defaults in use across `docs/`.
+- Claude Code guard hook rule 7: no commit while a required Git slot is open.
+- `AGENTS.md` hard rule 12: missing settings are asked, not guessed.
+
+### Changed
+- `guides/GIT.md` "Commit messages" is now a structure rule: imperative
+  subject under 72 characters with the ticket key first when one exists, a
+  short form and a long form with labels (Why, What, Verified, Touches,
+  Ticket), and a `Ticket:` line always last.
+- The Git section of `AGENTS.md` is a pointer to `docs/GIT.md`. `REVIEW.md`,
+  `AUTONOMY.md`, the pre-commit reviewer and the commit skill point there too.
+
+### Follow-up
+- `TESTING.md` commands and `AUTONOMY.md` overrides still live in `AGENTS.md`;
+  they get their own partners in a later version.
+
 ## 0.2.0 (2026-10-13)
 
 ### Added

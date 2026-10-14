@@ -44,7 +44,9 @@ that is a finding: ask, do not guess.
 
 ## Step 3: Load the rules that apply
 
-- `AGENTS.md`: hard rules, critical invariants, Git section.
+- `AGENTS.md`: hard rules, critical invariants.
+- `docs/GIT.md`: identity, who commits, attribution, ticket pattern, overrides.
+  An override that does not name the kit rule it replaces is a finding.
 - `REVIEW.md`: severity levels, passes, project-specific checks, exclusions.
 - `docs/adr/`: accepted ADRs for the areas touched.
 - `docs/CONVENTIONS.md`, and `docs/UI.md` if UI changed.
@@ -134,8 +136,10 @@ incidents in agent-built projects:
 
 **Commit**
 - One topic. If the diff holds more than one, propose the split.
-- Draft a message that follows the Git section of `AGENTS.md`. Check
-  attribution against the project setting.
+- Draft a message that follows `docs/guides/GIT.md` "Commit messages" with
+  the values in `docs/GIT.md`. Check attribution against that setting. If a
+  required slot in `docs/GIT.md` is still open, say so: the main session must
+  ask the human before committing.
 
 If a check needs a command (tests, lint, typecheck) and the project lists it
 in `AGENTS.md`, run it. Say which commands you ran and their result. Do not

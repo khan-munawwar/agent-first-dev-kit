@@ -1,6 +1,6 @@
 # DOCS: how this documentation system works
 
-<!-- Managed by agent-first-dev-kit v0.2.0. Do not edit in a project; change the kit and sync. -->
+<!-- Managed by agent-first-dev-kit v0.3.0. Do not edit in a project; change the kit and sync. -->
 
 ## The idea
 
@@ -49,7 +49,40 @@ The tier of every file is in `docs/README.md`. Front matter can also carry
 
 Do not create a new file for one bug, one task or one correction.
 
-## Rules that keep it healthy
+## Guide pairs: kit rules, project values
+
+A kit guide `guides/<TOPIC>.md` holds the rules and the reasons. Its project
+partner `docs/<TOPIC>.md` holds the values that make the rules concrete here.
+The kit replaces the guide on sync and never touches the partner.
+
+| | Kit guide `guides/<TOPIC>.md` | Project partner `docs/<TOPIC>.md` |
+|---|---|---|
+| Owner | Kit, replaced on sync | Project, never replaced |
+| Holds | Rules, reasons, slot names, defaults | Slot values, examples, overrides |
+| Test | True in your next project too | Names something only this project has |
+
+Current pairs: `GIT.md`, `UI.md`. Partners that still live in other files
+(`TESTING.md` commands in `AGENTS.md`, `AUTONOMY.md` overrides in `AGENTS.md`)
+move to their own partner in a later kit version.
+
+A partner file has two kinds of content:
+1. **Settings** fill a slot the guide named. Most content is this.
+2. **Overrides** replace a kit rule. Rare. Each one names the rule it replaces
+   and the reason: "Overrides `guides/GIT.md` 'no type prefixes': the release
+   tool parses `feat:`." An override without that sentence is a mistake, and
+   the pre-commit reviewer treats it as one.
+
+Slots carry their state as HTML comments, so `scripts/settings-check.sh` and
+`scripts/agent-check.sh` can read them:
+- A SETUP comment (`SETUP(P1)`, `P2`, `P3`) marks a required slot that is not
+  set. P1 means "before the task that needs it". The agent asks the human,
+  never guesses.
+- A comment holding only the word `default` marks a value still on the kit
+  default. The agent uses it, says so once per session, and invites the human
+  to set their own. The human confirms by deleting the comment.
+
+The point: work never stops for a missing optional value, and never proceeds
+on a guessed required one.
 
 - **One source of truth.** Each fact lives in one place. Other places link to
   it. Never "update both".

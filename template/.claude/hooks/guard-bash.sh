@@ -12,6 +12,8 @@
 #      (scripts/review-gate.sh check).
 #   6. No command that mentions a production host listed in
 #      .claude/hooks/prod-hosts.txt (one pattern per line, # for comments).
+#   7. No commit while a required Git setting (a SETUP(P1) comment in
+#      docs/GIT.md) is still open: the agent must ask the human first.
 #
 # Humans are not affected: this runs only for the agent's Bash tool.
 
@@ -75,6 +77,9 @@ if printf '%s' "$cmd" | grep -qE "(^|[;&|[:space:]])${GIT}commit"; then
   fi
   if printf '%s' "$cmd" | grep -qE "${GIT}commit[^;&|]*[[:space:]]--[[:space:]]"; then
     block "do not pass paths to 'git commit'. Stage explicitly, review, then commit."
+  fi
+  if [ -f "$ROOT/docs/GIT.md" ] && grep -qE 'SETUP\(P1\):' "$ROOT/docs/GIT.md"; then
+    block "required Git settings are still open in docs/GIT.md (run 'bash scripts/settings-check.sh GIT'). Ask the human for them, record the answers in docs/GIT.md, then commit."
   fi
   if [ -f "$ROOT/scripts/review-gate.sh" ]; then
     if ! (cd "$ROOT" && bash scripts/review-gate.sh check >/dev/null 2>&1); then

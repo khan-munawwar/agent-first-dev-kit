@@ -1,6 +1,6 @@
 # TESTING: how to test and how to claim something works
 
-<!-- Managed by agent-first-dev-kit v0.2.0. Project test commands live in AGENTS.md and CONVENTIONS.md. -->
+<!-- Managed by agent-first-dev-kit v0.3.0. Project test commands live in AGENTS.md and CONVENTIONS.md. -->
 
 ## Layers
 

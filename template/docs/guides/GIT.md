@@ -1,11 +1,40 @@
 # GIT: branches, commits and pull requests
 
-<!-- Managed by agent-first-dev-kit v0.2.0. The project's own settings (who commits, message style, attribution, identity) live in the Git section of AGENTS.md. -->
+<!-- Managed by agent-first-dev-kit v0.3.0. Project settings (identity, who commits, ticket pattern, examples, overrides) live in docs/GIT.md. -->
+
+## Project settings
+
+This guide holds the rules. The values that make them concrete for one
+project live in `docs/GIT.md`, which the kit never replaces (`DOCS.md`,
+"Guide pairs"). Slots:
+
+| Slot | Required | Kit default |
+|---|---|---|
+| Git name and email for this repository | yes | none: never guess |
+| Tracker and ticket key pattern | yes | none: "none" is a valid answer |
+| Who commits | no | human |
+| AI attribution | no | off |
+| Who pushes and merges | no | human |
+| Default branch and protection | no | `main`, protected |
+| Branch naming | no | `<ticket>-short-name`, else `<type>/short-name` |
+| Form, labels, project additions | no | this guide's "Commit messages" |
+| Two real examples | later (P2) | the examples in this guide |
+
+When a setting is missing:
+- **Required slot still open** (a SETUP comment): stop before the task that
+  needs it and ask the human, at most five questions at a time. Never guess.
+  In Claude Code the guard hook blocks `git commit` while a P1 slot is open.
+- **Slot on the kit default** (a "default" comment): use the default, and say
+  once per session: "Using the kit default for <slot> (docs/GIT.md). Tell me
+  your preference and I will record it." Do not stop.
+
+`bash scripts/settings-check.sh GIT` prints both lists and is the first step
+of every commit flow.
 
 ## Branches
 
 - The default branch is protected: changes arrive only through pull requests.
-- Work on short-lived branches. Naming follows the Git section of `AGENTS.md`.
+- Work on short-lived branches. Naming follows `docs/GIT.md`.
 - One topic per branch. Delete branches after merge. Stale branches are pruned
   at each milestone.
 - Production runs a known branch or tag (`OPERATIONS.md`), never a random
@@ -19,7 +48,8 @@
 3. Run the pre-commit review (`docs/agents/pre-commit-reviewer.md`).
 4. `BLOCK`: fix, stage, review again. `PASS WITH NOTES`: fix or get a yes to
    commit anyway. `PASS`: continue.
-5. Draft the message in the project style (`AGENTS.md` Git section).
+5. Draft the message per "Commit messages" below with the values in
+   `docs/GIT.md`.
 6. Commit only if the project lets the agent commit and the user asked for it.
    Otherwise hand the message to the human.
 7. In Claude Code, run `bash scripts/review-gate.sh mark` right before
@@ -39,20 +69,66 @@ Rules:
 
 ## Commit messages
 
-The style is a project choice, set in `AGENTS.md` with two real examples.
-Whatever the style:
-- One topic per commit.
-- Say what changed, in the project's voice.
-- Attribution (for example `Co-Authored-By` lines for an AI) follows the
-  project setting exactly. If the setting is off, no trailers, no session
-  links, nothing.
+The structure is a kit rule. The ticket pattern, labels and examples are
+project values in `docs/GIT.md`.
+
+**Subject.** Imperative mood, under 72 characters, no trailing period. When a
+ticket exists, its key opens the subject. No type prefixes (`feat:`, `fix:`)
+unless `docs/GIT.md` overrides this. One topic per commit.
+
+**Two forms.** Use the short form when a reader of the diff needs no
+explanation. Use the long form whenever the change touches behaviour,
+security, data, infrastructure, or when a reader would ask "why".
+
+**Short form:** the subject, a blank line, then the `Ticket:` line.
+
+```
+PRJ-44 Invalidate the My Tasks cache on create and delete too
+
+Ticket: PRJ-44
+```
+
+**Long form:** the subject, then a body with these labels in this order.
+Each label starts a paragraph. Skip a label only when it has nothing to say.
+
+- `Why:` the problem or need, in one or two sentences.
+- `What:` what the change does and does not cover.
+- `Verified:` what was run and its result. "Not run" is a valid, honest value.
+- `Touches:` the areas changed and whether tests were added.
+- `Ticket:` the key, or `none`. Always the last line.
+
+Optional labels: `Not covered:`, `Follow-up:`.
+
+```
+PRJ-41 Clear the client audit advisories that blocked the build
+
+Why: new upstream advisories made the prebuild gate fail every client
+build, locally and in CI.
+
+What: npm audit fix bumps nine transitive packages in the lockfile. Two
+advisories have no usable fix and are allowlisted with a written reason;
+both are build-time only. The gate script now resolves dependency chains.
+
+Verified: gate passes on the fixed tree, fails when an allowlist entry is
+removed, client image builds with the gate running inside Docker.
+
+Touches: client lockfile, gate script, allowlist. Tests: none added.
+Ticket: PRJ-41
+```
+
+**Attribution.** Follows the `docs/GIT.md` setting exactly. When off, no
+trailers, no "Generated with", no session links, nothing.
+
+**Why labels.** They keep a long message scannable and stop it drifting into
+a summary of the diff. A body that only restates the diff is the wrong form.
 
 ## Identity
 
-Check `git config user.name` and `user.email` before the first commit in a
-repo. Set them per repository (`git config` without `--global`) when the
-project needs a different identity from the machine default. For public
-repositories, consider the hosting service's private no-reply email address.
+The identity for this repository is a required slot in `docs/GIT.md`. Before
+the first commit, compare it with `git config user.name` and `user.email` in
+the repository and fix any mismatch with `git config` (no `--global`). Never
+take an identity from the machine default or from the AI tool's account. For
+public repositories, consider the hosting service's private no-reply address.
 
 ## Pull requests
 

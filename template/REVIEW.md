@@ -34,8 +34,8 @@ The same passes run on every change: before a commit (the pre-commit reviewer,
 8. **Hygiene.** Debug code, generated files edited by hand, backups or copies
    of folders, large binaries, lockfile churn, local URLs or dev flags that
    could ship.
-9. **Commit.** One topic per commit. The message follows the Git section of
-   `AGENTS.md`. Attribution follows the project setting.
+9. **Commit.** One topic per commit. The message follows `docs/guides/GIT.md`
+   with the values in `docs/GIT.md`. Attribution follows that setting.
 
 ## Project-specific checks
 
